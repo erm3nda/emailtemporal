@@ -47,7 +47,7 @@ def home():
     random_inbox = urllib.parse.quote_plus(get_random_words())
     #return "This is the homepage!"
     print("Will redirect to " + random_inbox)
-    return redirect(f"https://emailtemporal.es/{random_inbox}@emailtemporal.es")
+    return redirect(f"https://{main_domain}/{random_inbox}@emailtemporal.es")
 
 
 @app.route("/<inbox>")
