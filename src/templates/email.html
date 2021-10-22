@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <div id="header" class="header lead">
+        <div class="navbar navbar-nav navbar-center">
+            {{ email }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascroto %}
+    <script type="text/javascript">
+    $( document ).ready(function() {
+        $(".message").click(function () {
+            $message = $(this)[0];
+            $header = $message.querySelector("div.header");
+            $content = $message.querySelector("div.content");
+            $expand = $message.querySelector("div.expand");
+            $($content).slideToggle(300, function () {
+                $($expand).text(function () {              
+                    return $($content).is(":visible") ? "Collapse" : "Expand";
+                });
+            });
+        });
+    });
+    </script>
+{% endblock %}
+
+{% block container %}
+    <div id="container" class="container">
+        {% for item in emails %}
+            <div class="message lead">
+                <a href="#">
+                    <div class="header float-left w-75">{{ item[0] }}</div>
+                    <div class="expand float-right w-25">Expand</div>
+                </a>
+                <div class="content w-75" style="display: none;">
+                    {{ item[1]|safe }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
