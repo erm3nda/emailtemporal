@@ -4,6 +4,7 @@ import email
 import json
 import random
 import urllib
+from email.header import decode_header
 
 
 app = Flask(__name__)
@@ -28,7 +29,7 @@ def get_random_words():
 
 
     if len(rand_name) < restricted_inbox_lenght:
-        return get_random_words() 
+        return get_random_words()
 
     return rand_name
 
@@ -65,7 +66,7 @@ def read_email(inbox):
     else:
         emails = return_emails_for_selected_inbox(parsed_email, parsed_domain)
         return render_template("email.html", email="@".join((parsed_email, parsed_domain)), emails=emails)
-        
+
 
 def return_emails_for_selected_inbox(parsed_email, parsed_domain):
     mail = imaplib.IMAP4_SSL(parsed_domain, 993)
@@ -83,8 +84,8 @@ def return_emails_for_selected_inbox(parsed_email, parsed_domain):
         raw_email_string = raw_email.decode('utf-8')
         email_message = email.message_from_string(raw_email_string)
         #print(email_message)
-        email_subject = email_message.get("subject")
-        email_parts = email_message.get_payload(decode=False)
+        email_subject = decode_header(email_message.get("SUBJECT"))[0][0].decode("utf-8")
+        email_parts = email_message.get_payload(decode=True)
 
         if email_message.is_multipart():
             for part in email_parts:
